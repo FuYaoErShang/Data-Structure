@@ -16,47 +16,55 @@ void headInsert(Node* list,int newData)
 {
     Node* node = (Node*)malloc(sizeof(Node));
     node->data = newData;
-    node->next = list;
-    list = node;
+    node->next = list->next;
+    list->next = node;
     list->data++;
 }
 void tailInsert(Node* list,int newData)
 {
     Node* node = (Node*)malloc(sizeof(Node));
+    Node* head = list;
     node->data = newData;
-    if (list->next == NULL)
+    while (list->next != NULL)
     {
-        list->next = node;
-        node->next = NULL;
+        list = list->next;
+        if (list->next == NULL)
+        {
+            list->next = node;
+            node->next = NULL;
+        }
     }
-    list->data++;
-    
+    head->data++;
 }
 void delate(Node* list,int num)
 {
     Node* head = list;
-    Node* current;
-    list = list->next;           //此处的list是链表的首地址，并不代表整一个链表
+    Node* previous;
     while (list->next != NULL)
     {
+        previous = list;
+        list = list->next;
         if(list->data == num)
         {
-            current = list->next;
-            list->next = current->next;
-            free(current);
-            break;
+            previous->next = list->next;
+            free(list);
+            head->data--;
+            list = head; 
         }
     }
-    head->data--;
 }
 void printList(Node* list)
 {
-    list = list->next;
     while (list->next != NULL)
     {
-        std::cout << list->data << "->";
         list = list->next;
+        std::cout << list->data;
+        if (list->next != NULL)
+        {
+            std::cout<<"->";
+        }
     }
+    std::cout<<"\n";
 }
 int main()
 {
@@ -69,9 +77,9 @@ int main()
     tailInsert(list,4);
     std::cout<<"Link List has " <<list->data<<" Element(s) :\n";
     printList(list);
-    delate(list,4);
-    std::cout<<"After Delate is :"<<list->data<<" Element(s) :\n";;
+    //delate(list,4);
+    delate(list,2);
+    std::cout<<"After Delate has :"<<list->data<<" Element(s) :\n";
     printList(list);
-    std::cout<<"\n";
     return 0;
 }
