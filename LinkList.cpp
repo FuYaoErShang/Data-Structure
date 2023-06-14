@@ -1,10 +1,5 @@
 #include <iostream>
-#include <stdlib.h>
-typedef struct listNode
-{
-    struct listNode* next;
-    int data;
-}Node;
+#include "DataStruct.h"
 Node* listInit()
 {
     Node* head = (Node*)malloc(sizeof(Node));
